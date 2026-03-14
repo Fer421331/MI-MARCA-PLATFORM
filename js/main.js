@@ -57,36 +57,84 @@ document.addEventListener("DOMContentLoaded", () => {
 
     animatedElements.forEach(el => observer.observe(el));
 
-    /* ====== FORM VALIDATION ====== */
+    /* ====== FORM VALIDATION & API FETCH ====== */
     const contactForm = document.getElementById("contact-form");
     if (contactForm) {
-        contactForm.addEventListener("submit", (e) => {
+        contactForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const btn = contactForm.querySelector('button[type="submit"]');
+            const feedbackEl = document.getElementById('form-feedback');
             const originalText = btn.innerHTML;
 
-            // Form data
-            const nombre = document.getElementById('nombre').value;
-            const email = document.getElementById('email').value;
-            const mensaje = document.getElementById('mensaje').value;
+            // Gather form data
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData.entries());
+            data.tipo_formulario = contactForm.getAttribute('data-type') || 'contacto';
 
-            if(nombre && email && mensaje) {
+            // Clear previous feedback
+            if (feedbackEl) {
+                feedbackEl.style.display = 'none';
+                feedbackEl.textContent = '';
+                feedbackEl.className = '';
+            }
+
+            try {
                 // Visual feedback of sending
                 btn.innerHTML = "Enviando... <span style='font-size: 1.2rem; margin-left:8px;'>✈️</span>";
                 btn.style.opacity = "0.8";
-                
-                setTimeout(() => {
-                    alert(`¡Excelente ${nombre}! Recibimos tu solicitud. Un ejecutivo se contactará en breve.`);
+                btn.disabled = true;
+
+                // Send request
+                const response = await fetch('/api/solicitudes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // Success state
                     contactForm.reset();
                     btn.innerHTML = "Mensaje Enviado ✓";
                     btn.style.background = "#10b981"; // success green
                     
+                    if (feedbackEl) {
+                        feedbackEl.style.display = 'block';
+                        feedbackEl.style.color = '#10b981';
+                        feedbackEl.textContent = result.message || '¡Tu solicitud ha sido enviada con éxito!';
+                    }
+                } else {
+                    // Error state from server
+                    btn.innerHTML = originalText;
+                    btn.style.background = "";
+                    if (feedbackEl) {
+                        feedbackEl.style.display = 'block';
+                        feedbackEl.style.color = '#ef4444'; // red
+                        feedbackEl.textContent = result.message || 'Ocurrió un error al procesar tu solicitud.';
+                    }
+                }
+            } catch (error) {
+                console.error("Error sending form:", error);
+                btn.innerHTML = originalText;
+                btn.style.background = "";
+                if (feedbackEl) {
+                    feedbackEl.style.display = 'block';
+                    feedbackEl.style.color = '#ef4444';
+                    feedbackEl.textContent = 'Hubo un problema de conexión al enviar el formulario. Intenta nuevamente.';
+                }
+            } finally {
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                
+                // Reset button visual after 5 seconds if success
+                if (btn.style.background === 'rgb(16, 185, 129)' || btn.style.background === '#10b981') {
                     setTimeout(() => {
                         btn.innerHTML = originalText;
                         btn.style.background = "";
-                        btn.style.opacity = "1";
-                    }, 3000);
-                }, 1500);
+                        if (feedbackEl) feedbackEl.style.display = 'none';
+                    }, 5000);
+                }
             }
         });
     }

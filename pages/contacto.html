@@ -18,9 +18,9 @@
                 <ul>
                     <li><a href="../index.html">Inicio</a></li>
                     <li><a href="nosotros.html">La Agencia</a></li>
-                    <li><a href="servicios.html">Expertise</a></li>
-                    <li><a href="portafolio.html">Work</a></li>
-                    <li><a href="clientes.html">Partners</a></li>
+                    <li><a href="servicios.html">Especialidad</a></li>
+                    <li><a href="portafolio.html">Proyectos</a></li>
+                    <li><a href="clientes.html">Aliados</a></li>
                     <li><a href="contacto.html" class="active btn btn-primary" style="padding: 0.6rem 1.5rem; margin-top: -0.2rem; color: #000; border: none;">Contactar</a></li>
                 </ul>
             </nav>
@@ -74,33 +74,65 @@
                 </div>
 
                 <div class="card fade-up stagger-3" style="background: rgba(10, 10, 10, 0.8); border: 1px solid rgba(255,255,255,0.08); padding: 3rem;">
-                    <form id="contact-form">
-                        <div class="form-group">
-                            <label for="nombre">Director Comercial / Encargado</label>
-                            <input type="text" id="nombre" required placeholder="Tu Nombre Completo">
+                    <form id="contact-form" data-type="contacto">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="nombre">Nombre Completo *</label>
+                                <input type="text" id="nombre" name="nombre" required placeholder="Tu Nombre">
+                            </div>
+                            <div class="form-group">
+                                <label for="empresa">Empresa</label>
+                                <input type="text" id="empresa" name="empresa" placeholder="Nombre de tu corporación">
+                            </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="email">E-Mail Corporativo</label>
-                            <input type="email" id="email" required placeholder="tu@empresa.com">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="email">E-Mail Corporativo *</label>
+                                <input type="email" id="email" name="correo" required placeholder="tu@empresa.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" id="telefono" name="telefono" placeholder="+504 9999-0000">
+                            </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="servicio">División a intervenir</label>
-                            <select id="servicio">
-                                <option style="color:#000;">Estrategia y Activaciones BTL</option>
-                                <option style="color:#000;">Industrial & Material POP</option>
-                                <option style="color:#000;">Sourcing de Merchandising Premium</option>
-                                <option style="color:#000;">Diseño Arquitectónico de Stand/Evento</option>
-                                <option style="color:#000;">Auditoría integral de línea</option>
-                            </select>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="servicio">División a intervenir</label>
+                                <select id="servicio" name="servicio">
+                                    <option value="" disabled selected style="color:#000;">Selecciona un servicio...</option>
+                                    <option style="color:#000;" value="Estrategia y Activaciones BTL">Estrategia y Activaciones BTL</option>
+                                    <option style="color:#000;" value="Industrial & Material POP">Industrial & Material POP</option>
+                                    <option style="color:#000;" value="Sourcing de Merchandising Premium">Sourcing de Merchandising Premium</option>
+                                    <option style="color:#000;" value="Diseño Arquitectónico de Stand/Evento">Diseño Arquitectónico de Stand/Evento</option>
+                                    <option style="color:#000;" value="Auditoría integral de línea">Auditoría integral de línea</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="presupuesto">Presupuesto Estimado ($)</label>
+                                <select id="presupuesto" name="presupuesto">
+                                    <option value="" disabled selected style="color:#000;">Selecciona un rango...</option>
+                                    <option style="color:#000;" value="Menos de $5,000">Menos de $5,000</option>
+                                    <option style="color:#000;" value="$5,000 - $15,000">$5,000 - $15,000</option>
+                                    <option style="color:#000;" value="$15,000 - $50,000">$15,000 - $50,000</option>
+                                    <option style="color:#000;" value="Más de $50,000">Más de $50,000</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="mensaje">Brief Inicial</label>
-                            <textarea id="mensaje" required placeholder="Describa el objetivo principal que su corporación busca alcanzar (Ej: Desplazar inventario en supermercado, visibilidad de nueva marca, posicionamiento en B2B...)"></textarea>
+                            <label for="fecha">Fecha Deseada del Proyecto</label>
+                            <input type="date" id="fecha" name="fecha_deseada" style="width: 100%; padding: 0.8rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: #fff; border-radius: 8px;">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mensaje">Brief Inicial *</label>
+                            <textarea id="mensaje" name="mensaje" required placeholder="Describa el objetivo principal que su corporación busca alcanzar..."></textarea>
                         </div>
                         
+                        <div id="form-feedback" style="display:none; margin-bottom: 1rem; padding: 1rem; border-radius: 8px; font-weight: 500;"></div>
+
                         <button type="submit" class="btn btn-primary" style="width: 100%; border-radius: 8px; font-size: 1.1rem;">Enviar Solicitud Confidencial</button>
                     </form>
                 </div>
@@ -124,15 +156,15 @@
                 <h4>Agencia</h4>
                 <ul>
                     <li><a href="nosotros.html">Filosofía</a></li>
-                    <li><a href="servicios.html">Expertise</a></li>
-                    <li><a href="portafolio.html">Featured Work</a></li>
+                    <li><a href="servicios.html">Especialidad</a></li>
+                    <li><a href="portafolio.html">Proyectos Destacados</a></li>
                 </ul>
             </div>
             
             <div class="footer-col">
                 <h4>Confianza</h4>
                 <ul>
-                    <li><a href="clientes.html">Nuestros Partners</a></li>
+                    <li><a href="clientes.html">Nuestros Aliados</a></li>
                     <li><a href="testimonios.html">Casos de Éxito</a></li>
                 </ul>
             </div>
